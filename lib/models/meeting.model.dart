@@ -102,7 +102,7 @@ class MeetingModel
 
   Future<bool> toggleMute({bool? unmute}) async {
     var local = getLocalAttendee();
-
+    debugPrint('Toggle mute failed $local, ${local.muteStatus} ${local.isVideoOn}');
     var res = (unmute ?? local.muteStatus)
         ? await methodChannelProvider.callMethod(MethodCallOption.unmute)
         : await methodChannelProvider.callMethod(MethodCallOption.mute);
