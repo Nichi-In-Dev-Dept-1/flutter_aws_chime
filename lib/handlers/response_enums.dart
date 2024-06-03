@@ -53,6 +53,7 @@ class Response {
 }
 
 class MethodCallOption {
+  static const String manageAllPermissions = "manageAllPermissions";
   static const String manageAudioPermissions = "manageAudioPermissions";
   static const String manageVideoPermissions = "manageVideoPermissions";
   static const String initialAudioSelection = "initialAudioSelection";

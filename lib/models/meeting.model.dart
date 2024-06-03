@@ -76,15 +76,9 @@ class MeetingModel
     methodChannelProvider.initializeObservers(MeetingModel());
   }
 
-  bool _checkPermissions(bool audioPermissions, bool videoPermissions) {
-    if (!audioPermissions && !videoPermissions) {
+  bool _checkPermissions(bool allPermissions) {
+    if (!allPermissions) {
       // Response.audio_and_video_permission_denied
-      return false;
-    } else if (!audioPermissions) {
-      // Response.audio_not_authorized
-      return false;
-    } else if (!videoPermissions) {
-      // Response.video_not_authorized
       return false;
     }
     return true;
@@ -203,13 +197,10 @@ class MeetingModel
   Future<bool> join() async {
     // call after config method
     debugPrint('join meeting');
-    bool audioPermissions =
-        await methodChannelProvider.requestAudioPermissions();
-    bool videoPermissions =
-        await methodChannelProvider.requestVideoPermissions();
-
+    bool allPermissions =
+        await methodChannelProvider.requestAllPermissions();
     // Create error messages for incorrect permissions
-    if (!_checkPermissions(audioPermissions, videoPermissions)) {
+    if (!_checkPermissions(allPermissions)) {
       return false;
     }
 

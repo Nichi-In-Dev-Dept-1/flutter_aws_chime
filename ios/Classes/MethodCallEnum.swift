@@ -9,6 +9,7 @@ import Foundation
 
 enum MethodCall: String {
     case manageAudioPermissions
+    case manageAllPermissions
     case manageVideoPermissions
     case initialAudioSelection
     case join
@@ -32,6 +33,8 @@ enum MethodCall: String {
 
 enum Response: String {
     // Authorization
+    case all_authorized = "iOS: All authorized."
+    case all_auth_not_granted = "iOS: ERROR all authorization not granted."
     case audio_authorized = "iOS: Audio authorized."
     case video_authorized = "iOS: Video authorized."
     case video_auth_not_granted = "iOS: ERROR video authorization not granted."

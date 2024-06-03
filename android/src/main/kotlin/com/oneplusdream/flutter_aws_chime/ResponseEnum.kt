@@ -3,7 +3,9 @@ package com.oneplusdream.flutter_aws_chime
 enum class Response(val msg: String) {
     // Authorization
     audio_auth_granted("Android: Audio usage authorized."),
+    all_auth_granted("Android: All usage authorized."),
     audio_auth_not_granted("Android: Failed to authorize audio."),
+    all_auth_not_granted("Android: Failed to authorize All."),
     video_auth_granted("Android: Video usage authorized."),
     video_auth_not_granted("Android: Failed to authorize video."),
 

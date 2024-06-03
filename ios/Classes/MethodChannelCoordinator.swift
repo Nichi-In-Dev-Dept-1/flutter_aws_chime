@@ -41,6 +41,8 @@ class MethodChannelCoordinator {
             let callMethod = MethodCall(rawValue: call.method)
             var response: MethodChannelResponse = .init(result: false, arguments: nil)
             switch callMethod {
+            case .manageAllPermissions:
+                response = self.manageAllPermissions()
             case .manageAudioPermissions:
                 response = self.manageAudioPermissions()
             case .manageVideoPermissions:
@@ -83,6 +85,48 @@ class MethodChannelCoordinator {
     //
     // ————————————————————————————————— Method Call Options —————————————————————————————————
     //
+
+    func manageAllPermissions() -> MethodChannelResponse {
+            let audioPermission = AVAudioSession.sharedInstance().recordPermission
+            let videoPermission: AVAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+            var audioPermissionGranted = false
+            var videoPermissionGranted = false
+            switch audioPermission {
+            case .undetermined:
+                if self.requestAudioPermission() {
+                    audioPermissionGranted = true
+                }
+                audioPermissionGranted = false
+            case .granted:
+                audioPermissionGranted = true
+            case .denied:
+                audioPermissionGranted = false
+            @unknown default:
+                audioPermissionGranted = false
+            }
+
+            switch videoPermission {
+                    case .notDetermined:
+                        if self.requestVideoPermission() {
+                            videoPermissionGranted = true
+                        }
+                        videoPermissionGranted = false
+                    case .authorized:
+                        videoPermissionGranted = true
+                    case .denied:
+                        videoPermissionGranted = false
+                    case .restricted:
+                        videoPermissionGranted = false
+                    @unknown default:
+                        videoPermissionGranted = false
+                    }
+
+                    if(videoPermissionGranted && audioPermissionGranted) {
+                        return MethodChannelResponse(result: true, arguments: Response.all_authorized.rawValue)
+                    } else {
+                    return MethodChannelResponse(result: true, arguments: Response.all_auth_not_granted.rawValue)
+                    }
+        }
     
     func manageAudioPermissions() -> MethodChannelResponse {
         let audioPermission = AVAudioSession.sharedInstance().recordPermission

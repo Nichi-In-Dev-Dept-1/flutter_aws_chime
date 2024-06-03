@@ -1,6 +1,7 @@
 package com.oneplusdream.flutter_aws_chime
 
 enum class MethodCall(val call: String) {
+    manageAllPermissions("manageAllPermissions"),
     manageAudioPermissions("manageAudioPermissions"),
     manageVideoPermissions("manageVideoPermissions"),
     initialAudioSelection("initialAudioSelection"),

@@ -14,9 +14,16 @@ class PermissionManager(
 ) : AppCompatActivity() {
     val context: Context
 
+    val ALL_PERMISSION_REQUEST_CODE = 100
+    val ALL_PERMISSIONS = arrayOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.MODIFY_AUDIO_SETTINGS,
+        Manifest.permission.RECORD_AUDIO,
+    )
+
     val VIDEO_PERMISSION_REQUEST_CODE = 1
     val VIDEO_PERMISSIONS = arrayOf(
-            Manifest.permission.CAMERA
+            Manifest.permission.CAMERA,
     )
 
     val AUDIO_PERMISSION_REQUEST_CODE = 2
@@ -27,9 +34,35 @@ class PermissionManager(
 
     var audioResult: MethodChannel.Result? = null
     var videoResult: MethodChannel.Result? = null
+    var allResult: MethodChannel.Result? = null
 
     init {
         context = activity.applicationContext
+    }
+
+    fun manageAllPermissions(result: MethodChannel.Result) {
+        videoResult = result
+        if (hasPermissionsAlready(VIDEO_PERMISSIONS)) {
+            allCallbackReceived()
+        } else {
+            ActivityCompat.requestPermissions(
+                activity,
+                VIDEO_PERMISSIONS,
+                VIDEO_PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+
+    fun allCallbackReceived() {
+        val callResult: MethodChannelResult
+        if (hasPermissionsAlready(ALL_PERMISSIONS)) {
+            callResult = MethodChannelResult(true, Response.all_auth_granted.msg)
+            videoResult?.success(callResult.toFlutterCompatibleType())
+        } else {
+            callResult = MethodChannelResult(false, Response.all_auth_not_granted.msg)
+            videoResult?.error("Failed", "Permission Error", callResult.toFlutterCompatibleType())
+        }
+        allResult = null
     }
 
     fun manageAudioPermissions(result: MethodChannel.Result) {
@@ -39,8 +72,8 @@ class PermissionManager(
         } else {
             ActivityCompat.requestPermissions(
                     activity,
-                    AUDIO_PERMISSIONS,
-                    AUDIO_PERMISSION_REQUEST_CODE
+                    ALL_PERMISSIONS,
+                    ALL_PERMISSION_REQUEST_CODE
             )
         }
     }

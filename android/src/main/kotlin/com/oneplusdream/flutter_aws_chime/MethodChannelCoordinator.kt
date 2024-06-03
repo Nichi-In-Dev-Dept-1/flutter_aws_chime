@@ -36,11 +36,14 @@ class MethodChannelCoordinator(binaryMessenger: BinaryMessenger, activity: Activ
         methodChannel.setMethodCallHandler { call, result ->
             val callResult: MethodChannelResult
             when (call.method) {
+                MethodCallFlutter.manageAllPermissions.call -> {
+                    permissionsManager.manageAllPermissions(result)
+                    return@setMethodCallHandler
+                }
                 MethodCallFlutter.manageAudioPermissions.call -> {
                     permissionsManager.manageAudioPermissions(result)
                     return@setMethodCallHandler
                 }
-
                 MethodCallFlutter.manageVideoPermissions.call -> {
                     permissionsManager.manageVideoPermissions(result)
                     return@setMethodCallHandler

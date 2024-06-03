@@ -123,6 +123,15 @@ class MethodChannelCoordinator {
     }
   }
 
+  Future<bool> requestAllPermissions() async {
+    MethodChannelResponse? allPermission =
+    await callMethod(MethodCallOption.manageAllPermissions);
+    if (allPermission == null) {
+      return false;
+    }
+    return allPermission.result;
+  }
+
   Future<bool> requestAudioPermissions() async {
     MethodChannelResponse? audioPermission =
         await callMethod(MethodCallOption.manageAudioPermissions);
