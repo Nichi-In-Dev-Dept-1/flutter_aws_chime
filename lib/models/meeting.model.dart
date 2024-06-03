@@ -222,8 +222,7 @@ class MeetingModel
     if (joinResponse.result) {
       await listAudioDevices();
       await initialAudioSelection();
-      await toggleVideo();
-      await toggleMute(unmute: true);
+      await toggleMute(unmute: false);
       return true;
     } else {
       // To do error
