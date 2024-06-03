@@ -74,12 +74,12 @@ class _ActionsViewState extends State<ActionsView> {
               icon: Icons.headphones,
               onTap: () => showAudioDeviceDialog(context),
             ),
-            IconButtonView(
-              icon: Icons.crop_rotate,
-              onTap: () async {
-                MeetingModel().toggleCameraSwitch();
-              },
-            ),
+            // IconButtonView(
+            //   icon: Icons.crop_rotate,
+            //   onTap: () async {
+            //     MeetingModel().toggleCameraSwitch();
+            //   },
+            // ),
             IconButtonView(
               icon: Icons.stop,
               iconColor: Colors.red,
